@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { firebase, db } from "../firebase";
 import { collatedTaskExist } from "../helper";
 import moment from "moment";
+
 export const useTasks = (selectedProject) => {
   const [tasks, setTasks] = useState([]);
   const [archivedTasks, setArchivedTasks] = useState([]);
   useEffect(() => {
     let unsubscribe = firebase
       .firestore()
-      .collection()
+      .collection("tasks")
       .where("userId", "==", "tempUserId");
     unsubscribe =
       selectedProject && !collatedTaskExist(selectedProject)
@@ -31,7 +32,7 @@ export const useTasks = (selectedProject) => {
         selectedProject === "NEXT_7"
           ? newTasks.filter(
               (task) =>
-                moment(task.date, "DD-MM-YYYY").diff(moment(), days) <= 7 &&
+                moment(task.date, "DD-MM-YYYY").diff(moment(), "days") <= 7 &&
                 task.archived !== true
             )
           : newTasks.filter((task) => task.archived !== true)
@@ -55,13 +56,10 @@ export const useProjects = () => {
           ...projects.data(),
           docId: projects.id,
         }));
+        if (JSON.stringify(allProjects) !== JSON.stringify(projects)) {
+          setProjects(allProjects);
+        }
       });
-    // return () => {
-
-    // };
-    if (JSON.stringify(allProjects) !== JSON.stringify(projects)) {
-      setProjects(allProjects);
-    }
   }, [projects]);
   return { projects, setProjects };
 };

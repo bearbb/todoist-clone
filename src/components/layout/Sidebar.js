@@ -21,13 +21,13 @@ export const Sidebar = () => {
         </li>
         <li>Next 7 days</li>
       </div>
-      <div className="sidebar_+middle">
+      <div className="sidebar__middle">
         <span>
           <FaChevronDown />
         </span>
         <h2>Projects</h2>
       </div>
-      <ul className="Sidebar__Projects">Projects will be here</ul>
+      <ul className="sidebar__projects">Projects will be here</ul>
     </div>
   );
 };
